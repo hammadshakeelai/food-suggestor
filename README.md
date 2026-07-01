@@ -13,7 +13,22 @@
   <img alt="Node" src="https://img.shields.io/badge/Node-%E2%89%A520-3c873a?logo=node.js&logoColor=white" />
   <img alt="Dependencies" src="https://img.shields.io/badge/dependencies-zero-ef4f8f" />
   <img alt="Frontend" src="https://img.shields.io/badge/frontend-vanilla%20JS-c91968" />
-  <img alt="Deploy" src="https://img.shields.io/badge/deploy-Vercel-black?logo=vercel" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-black" />
+</p>
+
+<p align="center">
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key&project-name=pink-plate&repository-name=food-suggestor">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
+  </a>
+  &nbsp;
+  <a href="https://food-suggestor.vercel.app">
+    <img alt="Live demo" src="https://img.shields.io/badge/live%20demo-food--suggestor.vercel.app-ef4f8f?logo=vercel&logoColor=white" height="32" />
+  </a>
+</p>
+
+<p align="center">
+  <strong>🔗 Live:</strong> <a href="https://food-suggestor.vercel.app">food-suggestor.vercel.app</a> &nbsp;·&nbsp;
+  <strong>💻 Repo:</strong> <a href="https://github.com/hammadshakeelai/food-suggestor">github.com/hammadshakeelai/food-suggestor</a>
 </p>
 
 ---
@@ -73,19 +88,26 @@
 ## ☁️ Deploy to Vercel
 
 The repo is Vercel-ready: `vercel.json` serves `public/` as static files and runs
-`api/suggest.js` as the API.
+`api/suggest.js` as the serverless API.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/hammadshakeelai/food-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key)
+**One-click (recommended):**
 
-Or from the CLI:
+1. Click **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key&project-name=pink-plate&repository-name=food-suggestor)**.
+2. When Vercel prompts for the **`AGNES_API_KEY`** environment variable, paste your Agnes AI key
+   (it's the value in your local `.env` file — never committed to git).
+3. Deploy. Your app goes live at `https://<project>.vercel.app`.
+
+**From the CLI:**
 
 ```bash
-vercel                     # deploy a preview
-vercel env add AGNES_API_KEY   # paste your key
-vercel --prod              # ship to production
+npm i -g vercel
+vercel login
+vercel env add AGNES_API_KEY   # paste your key (Production)
+vercel --prod                  # ship it
 ```
 
-Set `AGNES_API_KEY` in **Project → Settings → Environment Variables** (never commit it).
+> 🔒 `AGNES_API_KEY` is a **secret** — it lives only in Vercel's Environment Variables
+> and your local `.env`. It is never committed to the repository.
 
 ## ⚙️ Configuration
 
