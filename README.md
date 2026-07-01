@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key&project-name=pink-plate&repository-name=food-suggestor">
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
   </a>
   &nbsp;
@@ -92,7 +92,7 @@ The repo is Vercel-ready: `vercel.json` serves `public/` as static files and run
 
 **One-click (recommended):**
 
-1. Click **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key&project-name=pink-plate&repository-name=food-suggestor)**.
+1. Click **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhammadshakeelai%2Ffood-suggestor&env=AGNES_API_KEY&envDescription=Your%20Agnes%20AI%20API%20key)**.
 2. When Vercel prompts for the **`AGNES_API_KEY`** environment variable, paste your Agnes AI key
    (it's the value in your local `.env` file — never committed to git).
 3. Deploy. Your app goes live at `https://<project>.vercel.app`.
