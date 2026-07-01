@@ -1,0 +1,896 @@
+:root {
+  color-scheme: light;
+  --bg: #fff5f8;
+  --panel: #ffffff;
+  --panel-soft: #fff9fb;
+  --ink: #2f1723;
+  --muted: #8b6676;
+  --line: #f1cfda;
+  --pink: #ef4f8f;
+  --pink-deep: #c91968;
+  --rose: #ff8fb7;
+  --peach: #ffd1c1;
+  --mint: #b7f0d2;
+  --shadow: 0 24px 70px rgba(175, 38, 100, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 14% 10%, rgba(255, 172, 199, 0.42), transparent 28rem),
+    linear-gradient(135deg, #fff7fa 0%, #ffe6ef 48%, #fff8ef 100%);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 304px minmax(0, 1fr);
+  /* minmax(0, 1fr) pins the single row to the viewport height so inner
+     `1fr` regions (the message list) can scroll instead of growing the page. */
+  grid-template-rows: minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  border-right: 1px solid rgba(239, 79, 143, 0.18);
+  backdrop-filter: blur(22px);
+}
+
+/* Scrim behind the mobile drawer; tapping it closes the sidebar. Hidden on
+   desktop where the sidebar is a permanent grid column. */
+.sidebar-backdrop {
+  display: none;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--pink), #ff9e70);
+  box-shadow: 0 12px 28px rgba(239, 79, 143, 0.32);
+  font-weight: 800;
+}
+
+.brand-row h1,
+.brand-row p,
+.topbar h2,
+.topbar p {
+  margin: 0;
+}
+
+.brand-row h1 {
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.brand-row p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.new-chat-button,
+.suggest-button {
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+  box-shadow: 0 16px 34px rgba(201, 25, 104, 0.22);
+  font-weight: 800;
+}
+
+.new-chat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border-radius: 12px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.new-chat-button span {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.chat-tab {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  min-height: 64px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid transparent;
+  border-radius: 12px;
+}
+
+.chat-tab:hover,
+.chat-tab.is-active {
+  border-color: rgba(239, 79, 143, 0.32);
+  background: #fff2f7;
+}
+
+.chat-tab-open {
+  display: grid;
+  gap: 5px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 6px 12px 14px;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.chat-tab-delete {
+  flex: 0 0 auto;
+  width: 30px;
+  margin: 8px 8px 8px 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.chat-tab:hover .chat-tab-delete,
+.chat-tab.is-active .chat-tab-delete,
+.chat-tab-delete:focus-visible {
+  opacity: 1;
+}
+
+.chat-tab-delete:hover {
+  color: var(--pink-deep);
+  background: #ffe0ec;
+}
+
+.chat-tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.chat-tab-date {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.chat-panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  /* min-height: 0 lets this grid item shrink to its track instead of being
+     forced tall by its content, which is what kept .messages from scrolling. */
+  min-height: 0;
+  min-width: 0;
+  padding: 22px;
+}
+
+.scroll-to-latest {
+  position: absolute;
+  left: 50%;
+  bottom: 104px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--pink-deep);
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(239, 79, 143, 0.24);
+  border-radius: 50%;
+  box-shadow: 0 12px 28px rgba(201, 25, 104, 0.22);
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.scroll-to-latest.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.scroll-to-latest:hover {
+  background: #fff0f6;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: min(100%, 1180px);
+  margin: 0 auto 16px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(239, 79, 143, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 16px 50px rgba(201, 25, 104, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.eyebrow {
+  color: var(--pink-deep);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.topbar h2 {
+  margin-top: 4px;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+}
+
+.status-pill {
+  min-width: 76px;
+  padding: 9px 12px;
+  color: var(--pink-deep);
+  background: #fff0f6;
+  border: 1px solid rgba(239, 79, 143, 0.2);
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.icon-button {
+  display: none;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(239, 79, 143, 0.18);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.menu-button span {
+  display: block;
+  width: 17px;
+  height: 2px;
+  margin: 4px auto;
+  border-radius: 999px;
+  background: var(--pink-deep);
+}
+
+.messages {
+  width: min(100%, 1180px);
+  min-height: 0;
+  margin: 0 auto;
+  overflow-y: auto;
+  padding: 10px 4px 18px;
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100%;
+  text-align: center;
+  color: var(--muted);
+}
+
+.empty-visual {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  margin-bottom: 18px;
+  border-radius: 32px;
+  background: linear-gradient(145deg, #ffffff, #ffe4ee);
+  box-shadow: var(--shadow);
+}
+
+.empty-visual span {
+  position: absolute;
+  display: block;
+}
+
+.plate {
+  inset: 23px 18px 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 10px solid #ffd6e5;
+  box-shadow: inset 0 0 0 1px rgba(201, 25, 104, 0.1);
+}
+
+.sauce {
+  left: 42px;
+  top: 46px;
+  width: 28px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4f8f, #ff9e70);
+}
+
+.leaf {
+  width: 24px;
+  height: 13px;
+  border-radius: 999px 999px 999px 0;
+  background: var(--mint);
+}
+
+.leaf-one {
+  left: 31px;
+  top: 34px;
+  transform: rotate(-28deg);
+}
+
+.leaf-two {
+  right: 29px;
+  top: 35px;
+  transform: rotate(36deg);
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: clamp(2.2rem, 6vw, 4.7rem);
+  letter-spacing: 0;
+}
+
+.empty-state p {
+  width: min(92vw, 520px);
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.message {
+  display: flex;
+  margin: 12px 0;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: min(76%, 720px);
+  padding: 14px 16px;
+  border-radius: 18px;
+  line-height: 1.55;
+  box-shadow: 0 10px 26px rgba(116, 44, 78, 0.08);
+  white-space: pre-wrap;
+}
+
+.message.user .bubble {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+  border-bottom-right-radius: 6px;
+}
+
+.message.assistant .bubble {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(239, 79, 143, 0.16);
+  border-bottom-left-radius: 6px;
+}
+
+.message.is-error .bubble {
+  color: #8a1744;
+  background: #fff0f4;
+  border-color: #ffc4d8;
+}
+
+.recipe-message {
+  width: min(100%, 1180px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(239, 79, 143, 0.18);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-message:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 30px 80px rgba(175, 38, 100, 0.22);
+}
+
+.recipe-image {
+  width: 100%;
+  /* Explicit responsive height — more reliable than aspect-ratio when the
+     child <img> uses height:100%, which otherwise collapses the box. */
+  height: clamp(220px, 34vw, 420px);
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffe2ed, #fff7fb);
+}
+
+/* Desktop: lay the photo beside the recipe so the whole dish reads at a
+   glance instead of as one tall scroll. :has() keeps single-column when a
+   recipe has no image. */
+@media (min-width: 861px) {
+  .recipe-message:has(.recipe-image) {
+    display: grid;
+    /* Image gets a slightly larger share so the dish shows big and complete,
+       while the recipe column stays wide enough to avoid heavy wrapping. */
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: stretch;
+  }
+
+  /* Show the whole photo (no crop) pinned to the top of a soft panel so it
+     lines up with the recipe heading; the panel fills any leftover height. */
+  .recipe-message:has(.recipe-image) .recipe-image {
+    display: grid;
+    place-items: start center;
+    height: 100%;
+    min-height: 320px;
+    padding: 16px;
+  }
+
+  .recipe-message:has(.recipe-image) .recipe-image img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 16px;
+  }
+
+  /* Keep ingredients/steps side by side and flexible so the narrower content
+     column never overflows, and tighten the body so it all fits on screen. */
+  .recipe-message:has(.recipe-image) .recipe-body {
+    padding: 18px 20px;
+  }
+
+  .recipe-message:has(.recipe-image) .recipe-heading h3 {
+    font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  }
+
+  .recipe-message:has(.recipe-image) .recipe-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .recipe-message:has(.recipe-image) .intro {
+    margin-top: 8px;
+  }
+
+  /* Denser lists in the side-by-side card so more of the recipe sits above
+     the fold and the image panel has less empty space beside it. */
+  .recipe-message:has(.recipe-image) .recipe-grid section,
+  .recipe-message:has(.recipe-image) .tips {
+    padding: 12px;
+  }
+
+  .recipe-message:has(.recipe-image) .recipe-grid ul,
+  .recipe-message:has(.recipe-image) .recipe-grid ol {
+    gap: 6px;
+    font-size: 0.92rem;
+    line-height: 1.36;
+  }
+
+  .recipe-message:has(.recipe-image) .tips {
+    margin-top: 10px;
+  }
+}
+
+.recipe-image img,
+.image-fallback {
+  width: 100%;
+  height: 100%;
+}
+
+.recipe-image img {
+  display: block;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.recipe-message:hover .recipe-image img {
+  transform: scale(1.03);
+}
+
+.image-fallback {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.image-fallback span {
+  font-size: 2rem;
+}
+
+.recipe-body {
+  padding: 22px;
+}
+
+.recipe-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+}
+
+.recipe-heading h3 {
+  margin: 0;
+  font-size: clamp(1.45rem, 4vw, 2.2rem);
+  line-height: 1.08;
+}
+
+.recipe-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta-pill {
+  padding: 5px 12px;
+  color: var(--pink-deep);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  background: #fff0f6;
+  border: 1px solid rgba(239, 79, 143, 0.22);
+  border-radius: 999px;
+}
+
+.intro {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.85fr) minmax(240px, 1.15fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.recipe-grid section,
+.tips {
+  padding: 14px;
+  background: var(--panel-soft);
+  border: 1px solid rgba(239, 79, 143, 0.14);
+  border-radius: 16px;
+}
+
+.recipe-grid h4,
+.tips h4 {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+}
+
+.recipe-grid ul,
+.recipe-grid ol {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 20px;
+  color: #4d2938;
+  line-height: 1.45;
+}
+
+.tips {
+  margin-top: 14px;
+}
+
+.tips p {
+  margin: 0;
+  color: #4d2938;
+  line-height: 1.6;
+}
+
+.loading-bubble {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.loading-bubble span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  animation: bounce 0.8s infinite alternate;
+}
+
+.loading-bubble span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.loading-bubble span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(239, 79, 143, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 22px 60px rgba(201, 25, 104, 0.14);
+  backdrop-filter: blur(18px);
+}
+
+.composer textarea {
+  width: 100%;
+  min-height: 50px;
+  max-height: 148px;
+  resize: none;
+  border: 0;
+  outline: 0;
+  padding: 14px 12px;
+  color: var(--ink);
+  background: transparent;
+  line-height: 1.45;
+}
+
+.composer textarea::placeholder {
+  color: #b98a9d;
+}
+
+.composer:focus-within {
+  border-color: rgba(239, 79, 143, 0.5);
+  box-shadow: 0 22px 60px rgba(201, 25, 104, 0.18), 0 0 0 3px rgba(239, 79, 143, 0.14);
+}
+
+.suggest-button {
+  align-self: end;
+  min-width: 142px;
+  min-height: 50px;
+  border-radius: 14px;
+  padding: 0 18px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+
+.new-chat-button:hover,
+.suggest-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(201, 25, 104, 0.32);
+}
+
+.new-chat-button:active,
+.suggest-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.suggest-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+/* Themed, slim scrollbars for the pink UI. */
+.messages,
+.chat-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(239, 79, 143, 0.4) transparent;
+}
+
+.messages::-webkit-scrollbar,
+.chat-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.messages::-webkit-scrollbar-thumb,
+.chat-list::-webkit-scrollbar-thumb {
+  background: rgba(239, 79, 143, 0.32);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+.messages::-webkit-scrollbar-thumb:hover,
+.chat-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 79, 143, 0.55);
+  background-clip: padding-box;
+}
+
+/* Clear keyboard focus ring for accessibility. */
+:focus-visible {
+  outline: 2px solid var(--pink-deep);
+  outline-offset: 2px;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-5px);
+    opacity: 0.58;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 20;
+    inset: 0 auto 0 0;
+    width: min(86vw, 320px);
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-left: max(20px, env(safe-area-inset-left));
+    transform: translateX(-105%);
+    transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: var(--shadow);
+    /* iOS momentum scroll inside the drawer's chat list. */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  /* Dim + blur the panel behind the open drawer; tap to dismiss. */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    background: rgba(63, 15, 36, 0.42);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease;
+  }
+
+  .sidebar-backdrop.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Touch devices have no hover, so surface delete controls permanently. */
+  .chat-tab-delete {
+    opacity: 1;
+  }
+
+  .chat-panel {
+    padding: 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .topbar {
+    border-radius: 16px;
+    gap: 10px;
+  }
+
+  /* Keep a long recipe title on one tidy line beside the menu button. */
+  .topbar > div {
+    min-width: 0;
+  }
+
+  .topbar h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon-button {
+    display: block;
+  }
+
+  /* Active/open state for the hamburger while the drawer is showing. */
+  .menu-button[aria-expanded="true"] {
+    background: #fff0f6;
+    border-color: rgba(239, 79, 143, 0.4);
+  }
+
+  .status-pill {
+    display: none;
+  }
+
+  .bubble {
+    max-width: 88%;
+  }
+
+  /* Full-width hero photo on mobile reads better than a boxed thumbnail. */
+  .recipe-image {
+    height: clamp(200px, 54vw, 320px);
+  }
+
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .composer {
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .suggest-button {
+    width: 100%;
+  }
+
+  .scroll-to-latest {
+    bottom: calc(150px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .recipe-message:hover {
+    transform: none;
+  }
+
+  .recipe-message:hover .recipe-image img {
+    transform: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .topbar {
+    padding: 12px;
+  }
+
+  .topbar h2 {
+    font-size: 1.14rem;
+  }
+
+  .messages {
+    padding-bottom: 12px;
+  }
+
+  .recipe-body {
+    padding: 16px;
+  }
+
+  .recipe-message {
+    border-radius: 18px;
+  }
+}

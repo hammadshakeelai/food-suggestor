@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ef4f8f" />
+    <title>Pink Plate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+      <aside class="sidebar" aria-label="Recipe chats">
+        <div class="brand-row">
+          <div class="brand-mark">P</div>
+          <div>
+            <h1>Pink Plate</h1>
+            <p>Recipe chats</p>
+          </div>
+        </div>
+        <button class="new-chat-button" id="newChatButton" type="button">
+          <span aria-hidden="true">+</span>
+          New chat
+        </button>
+        <div class="chat-list" id="chatList"></div>
+      </aside>
+
+      <main class="chat-panel">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menuButton" type="button" aria-label="Open chats" aria-controls="chatList" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <p class="eyebrow">Agnes AI kitchen</p>
+            <h2 id="activeTitle">Fresh recipe</h2>
+          </div>
+          <div class="status-pill" id="statusPill">Ready</div>
+        </header>
+
+        <section class="messages" id="messages" aria-live="polite"></section>
+
+        <button class="scroll-to-latest" id="scrollToLatest" type="button" aria-hidden="true" aria-label="Scroll to latest">
+          <span aria-hidden="true">↓</span>
+        </button>
+
+        <form class="composer" id="composer">
+          <textarea id="promptInput" rows="1" placeholder="What are you craving?" autocomplete="off"></textarea>
+          <button class="suggest-button" id="suggestButton" type="submit">
+            Suggest food
+          </button>
+        </form>
+      </main>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
