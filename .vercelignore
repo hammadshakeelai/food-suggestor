@@ -1,0 +1,9 @@
+# Never ship secrets or local-only files to Vercel.
+.env
+.env.*
+!.env.example
+
+# Dev-only files not needed at runtime.
+test
+assets
+_*.mjs

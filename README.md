@@ -21,13 +21,13 @@
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
   </a>
   &nbsp;
-  <a href="https://food-suggestor.vercel.app">
-    <img alt="Live demo" src="https://img.shields.io/badge/live%20demo-food--suggestor.vercel.app-ef4f8f?logo=vercel&logoColor=white" height="32" />
+  <a href="https://food-suggestor-five.vercel.app">
+    <img alt="Live demo" src="https://img.shields.io/badge/live%20demo-online-ef4f8f?logo=vercel&logoColor=white" height="32" />
   </a>
 </p>
 
 <p align="center">
-  <strong>🔗 Live:</strong> <a href="https://food-suggestor.vercel.app">food-suggestor.vercel.app</a> &nbsp;·&nbsp;
+  <strong>🔗 Live:</strong> <a href="https://food-suggestor-five.vercel.app">food-suggestor-five.vercel.app</a> &nbsp;·&nbsp;
   <strong>💻 Repo:</strong> <a href="https://github.com/hammadshakeelai/food-suggestor">github.com/hammadshakeelai/food-suggestor</a>
 </p>
 
